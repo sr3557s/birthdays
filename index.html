@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.3.3"></script>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Poppins', sans-serif;
+            text-align: center;
+            overflow: hidden;
+        }
+        .stage {
+            display: none;
+            height: 100vh;
+            justify-content: center;
+            align-items: center;
+            font-size: 2rem;
+            font-weight: bold;
+            color: #333;
+            flex-direction: column;
+            background-size: cover;
+            background-position: center;
+        }
+        .birthday-text {
+            font-size: 3rem;
+            font-weight: bold;
+            color: #ff4081;
+            animation: fadeInScale 1.5s ease-in-out;
+        }
+        .next-button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 1.2rem;
+            border: none;
+            background-color: #ff4081;
+            color: white;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        .start-button {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            padding: 15px 30px;
+            font-size: 1.5rem;
+            background-color: #ff4081;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <audio id="bgMusic" loop></audio>
+
+    <!-- Start Button -->
+    <button class="start-button" onclick="startExperience()">Start</button>
+
+    <!-- Stages -->
+    <div class="stage" id="stage1" style="background-image: url('background1.jpg');">
+        Hiiiiiiiiiiiii! [Name]
+        <button class="next-button" onclick="nextStage()">Next</button>
+    </div>
+    <div class="stage" id="stage2" style="background-image: url('background2.jpg');">
+        I wanted to tell you something...
+        <button class="next-button" onclick="nextStage()">Next</button>
+    </div>
+    <div class="stage" id="stage3" style="background-image: url('background3.jpg');">
+        <span class="birthday-text">Happy Birthday! 🎉</span>
+        <button class="next-button" onclick="nextStage()">Next</button>
+    </div>
+    <div class="stage" id="stage4" style="background-image: url('background4.jpg');">
+        <div class="letter">Dear [Name],<br><br>
+            Wishing you the happiest birthday! May your day be filled with joy and love.<br><br>
+            Yours truly,<br>
+            Srijan
+        </div>
+    </div>
+
+    <script>
+        const stages = document.querySelectorAll('.stage');
+        const bgMusic = document.getElementById('bgMusic');
+        const musicTracks = [
+            'music1.mp3',  // Stage 1 & 2
+            'music3.mp3',  // Stage 3
+            'music4.mp3'   // Stage 4
+        ];
+        let currentStage = 0;
+
+        function startExperience() {
+            document.querySelector('.start-button').style.display = 'none';
+            bgMusic.src = musicTracks[0]; // Play first track
+            bgMusic.play();
+            nextStage();
+        }
+
+        function nextStage() {
+            if (currentStage > 0) stages[currentStage - 1].style.display = 'none';
+            if (currentStage < stages.length) {
+                stages[currentStage].style.display = 'flex';
+
+                // Change music only when moving to Stage 3 or Stage 4
+                if (currentStage === 2 || currentStage === 3) {
+                    bgMusic.src = musicTracks[currentStage - 1];
+                    bgMusic.play();
+                }
+
+                if (currentStage === 2) startConfetti();
+                currentStage++;
+            }
+        }
+
+        function startConfetti() {
+            confetti({
+                particleCount: 100,
+                spread: 70,
+                origin: { y: 0.6 }
+            });
+        }
+    </script>
+
+</body>
+</html>
